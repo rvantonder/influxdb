@@ -5,6 +5,11 @@
 - [#7776](https://github.com/influxdata/influxdb/issues/7776): Add system information to /debug/vars.
 
 
+### Bugfixes
+
+- [#7856](https://github.com/influxdata/influxdb/issues/7856): Failed points during an import now result in a non-zero exit code.
+
+
 ## v1.2.1 [unreleased]
 
 ### Bugfixes

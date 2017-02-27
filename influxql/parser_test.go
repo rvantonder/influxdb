@@ -43,6 +43,26 @@ func TestParser_ParseQuery_Empty(t *testing.T) {
 	}
 }
 
+// Ensure the parser will skip comments.
+func TestParser_ParseQuery_SkipComments(t *testing.T) {
+	q, err := influxql.ParseQuery(`SELECT * FROM cpu; -- read from cpu database
+
+/* create continuous query */
+CREATE CONTINUOUS QUERY cq0 ON db0 BEGIN
+	SELECT mean(*) INTO db1..:MEASUREMENT FROM cpu GROUP BY time(5m)
+END;
+
+/* just a multline comment
+what is this doing here?
+**/
+-- trailing comment at the end`)
+	if err != nil {
+		t.Fatalf("unexpected error: %s", err)
+	} else if len(q.Statements) != 2 {
+		t.Fatalf("unexpected statement count: %d", len(q.Statements))
+	}
+}
+
 // Ensure the parser can return an error from an malformed statement.
 func TestParser_ParseQuery_ParseError(t *testing.T) {
 	_, err := influxql.NewParser(strings.NewReader(`SELECT`)).ParseQuery()

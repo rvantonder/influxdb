@@ -358,6 +358,9 @@ func (s *client) HTTPGet(url string) (results string, err error) {
 	if err != nil {
 		return "", err
 	}
+	
+	// BUG: doesn't close resp: http://devs.cloudimmunity.com/gotchas-and-common-mistakes-in-go-golang/index.html#close_http_conn
+	
 	body := strings.TrimSpace(string(MustReadAll(resp.Body)))
 	switch resp.StatusCode {
 	case http.StatusBadRequest:

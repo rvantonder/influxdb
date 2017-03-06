@@ -69,6 +69,8 @@ func (cmd *Command) dump() error {
 	if err != nil {
 		return err
 	}
+	
+	// BUG: f is never closed
 
 	// Get the file size
 	stat, err := f.Stat()
